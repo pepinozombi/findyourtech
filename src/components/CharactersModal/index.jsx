@@ -18,7 +18,12 @@ const CharactersModal = ({
       <Modal.Header closeButton>
         <Modal.Title>Select your character</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="character-modal">
+      {characters.length === 0 ? (
+        <Modal.Body className="character-modal">
+          <h2>Select a game first</h2>
+        </Modal.Body>
+      ):(
+        <Modal.Body className="character-modal">
         {characters.map((character) => (
           <div
             onClick={() => handleSelection(character)}
@@ -32,7 +37,9 @@ const CharactersModal = ({
             />
           </div>
         ))}
-      </Modal.Body>
+        </Modal.Body>
+      )}
+      
       <Modal.Footer>
         Images credit goes to{" "}
         {videogame === "sfv" && (
@@ -44,13 +51,13 @@ const CharactersModal = ({
             RelusionH
           </a>
         )}
-        {videogame === "mvsus" && (
+        {videogame === "ggst" && (
           <a
             target="_blank"
-            href="https://multiversus.com/en-gb/roster"
+            href="https://www.guiltygear.com/ggst/en/character/"
             rel="noreferrer"
           >
-            Multiversus official page
+            GGST official page
           </a>
         )}
       </Modal.Footer>
@@ -59,3 +66,5 @@ const CharactersModal = ({
 };
 
 export default CharactersModal;
+
+

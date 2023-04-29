@@ -1,0 +1,19 @@
+.x-button {
+    margin-left: 5px;
+}
+
+.selected-item {
+    opacity: 0.6;
+    padding: 0px 2px 2px 8px;
+    border: 1px  solid;
+    border-color: #839496;
+    border-radius: 16px;
+    transition: 0.3s;
+    margin-right:2px;
+}
+
+.selected-item:hover {
+    opacity: 1;
+    color:white;
+    border-color:white;
+}

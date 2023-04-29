@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 const db = getFirestore(app);
 
 export default async function createNewClip(clipData) {
-  const collectionRef = collection(db, "clips");
+  const collectionRef = collection(db, "ClipItemCard");
   const docRef = doc(collectionRef, uuidv4());
   await setDoc(docRef, { ...clipData, createdAt: serverTimestamp() });
 }

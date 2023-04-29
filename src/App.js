@@ -22,7 +22,7 @@ function App() {
   });
 
   return (
-    <AuthenticationContext.Provider value={value}>
+    // <AuthenticationContext.Provider value={value}>
       <BrowserRouter>
         <div className="App">
           <Header />
@@ -32,7 +32,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
-    </AuthenticationContext.Provider>
+    //</AuthenticationContext.Provider>
   );
 }
 

@@ -5,6 +5,7 @@ import { Navbar, Container, Nav, NavDropdown, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BoxArrowDown, Twitter, CaretDown } from "react-bootstrap-icons";
 import "./header.scss";
+import "../../pages/Upload/upload.scss";
 import { AuthenticationContext } from "../../App";
 
 export default function Header() {
