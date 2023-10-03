@@ -1,17 +1,17 @@
-import React from "react";
-import { Card, Image, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Card, Image, ListGroup, ListGroupItem, Stack } from "react-bootstrap";
 import ReactPlayer from "react-player";
 
 const ClipItemCard = ({
   clipURL,
   clipTitle,
   clipDescription,
-  charactersSelected,
+  clipTech,
   userName,
   userPhotoURL,
   userTwitterURL,
 }) => {
   const isTwitchClip = (clipURL) => clipURL.match("twitch");
+
 
   return (
     <Card style={{ margin: "10px" }}>
@@ -33,20 +33,61 @@ const ClipItemCard = ({
       <Card.Body style={{ minHeight: "120px" }}>
         <Card.Title>{clipTitle}</Card.Title>
         <Card.Text>{clipDescription}</Card.Text>
+          <Stack direction="horizontal">
+        {
+          clipTech.selectedClipType !== "" ? (
+            <div className="p-1 bd-highlight">
+              <span className="selected-item px-1"> 
+                  {clipTech.selectedClipType}
+              </span>
+            </div>
+          ): (
+            <>
+            </>
+          )
+        }
+        {
+          clipTech.selectedClipLevel !== "" ? (
+            <div className="p-1 bd-highlight">
+              <span className="selected-item px-1"> 
+                  {clipTech.selectedClipLevel}
+              </span>
+            </div>
+          ): (
+            <></>
+          )
+        }
+        </Stack>
       </Card.Body>
       <ListGroup className="list-group-flush">
-        {charactersSelected.map((character, i) => (
+        {clipTech.selectedVideogame !== undefined ? (clipTech.selectedVideogame.map((videogame, i) => (
           <ListGroupItem className="characters-selected" key={i}>
             <div className="character">
-              <img src={character.image} alt={character.name} />
-              <span>{character.name}</span>
+              <img src={videogame.videogame.image} alt={videogame.videogame.name} />
+              <span>{videogame.videogame.name}</span>
             </div>
           </ListGroupItem>
-        ))}
+        ))) : (
+          <>
+          </>
+        )}
+      </ListGroup>
+      <ListGroup className="list-group-flush" horizontal>
+        {clipTech.selectedCharacters !== undefined ? (clipTech.selectedCharacters.map((character, i) => (
+          <ListGroupItem className="characters-selected" key={i}>
+            <div className="character">
+              <img src={character.character.image} alt={character.character.name} />
+              <span>{character.character.name}</span>
+            </div>
+          </ListGroupItem>
+        ))) : (
+          <>
+          </>
+        )}
       </ListGroup>
       <Card.Body>
         {userName && userPhotoURL && (
-          <Card.Link target="_blank" href={userTwitterURL}>
+          <Card.Link target="_blank" href={"https://twitter.com/" + userTwitterURL}>
             <Image
               src={userPhotoURL}
               alt="UserName profile image"

@@ -4,6 +4,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Upload from "./pages/Upload/";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { authentication } from "./firebase/config";
 
 export const AuthenticationContext = createContext({ user: {}, setUser: () => {} });
@@ -22,7 +24,7 @@ function App() {
   });
 
   return (
-    // <AuthenticationContext.Provider value={value}>
+    <AuthenticationContext.Provider value={value}>
       <BrowserRouter>
         <div className="App">
           <Header />
@@ -32,7 +34,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
-    //</AuthenticationContext.Provider>
+    </AuthenticationContext.Provider>
   );
 }
 

@@ -1,168 +1,92 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
-import { PlusCircle } from "react-bootstrap-icons";
-import {
-  SFV_CHARACTERS,
-  GGST_CHARACTERS,
-} from "../../utils/collections/characters";
-import { VIDEOGAMES } from "../../utils/collections/videogames";
 import ClipItemCard from "../../components/ClipItemCard";
-import { AuthenticationContext } from "../../App";
 import createNewClip from "../../functions/createNewClip";
-import CharactersModal from "../../components/CharactersModal";
-import GamesModal from "../GamesModal";
 import { useNavigate } from "react-router";
-import shortid from 'shortid';
 import Cookies from 'universal-cookie';
-import SelectedClipType from "../SelectedClipType";
-import SelectedVideogame from "../SelectedVideogame";
-import SelectedCharacters from "../SelectedCharacters";
+import TechSelector from '../TechSelector'
+import { TECH_LAYOUT } from "../../utils/collections/layout";
+import { AuthenticationContext } from "../../App";
 
 export default function ClipUpload({
     filterSelection,
     handleFilterSelection}) {
-  const { user, setUser } = useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  
 
   const [charactersSelected, setCharactersSelected] = useState([]);
   const [characters, setCharacters] = useState([]);
   const [formFields, setFormFields] = useState({
-    clipVideogame: "",
-    clipType: "",
+    clipTech: [],
     clipTitle: "",
     clipDescription: "",
     clipURL: "",
+    userName: "", 
+    userPhotoURL: "", 
+    userTwitterURL: ""
   });
   
 
   const cookies = new Cookies();
-  const [showGamesModal, toggleGamesModal] = useState(false);
-  const [selectedClipType, setSelectedClipType] = useState("");
-  const [selectedCharacters, setSelectedCharacters] = useState([]);
-  const [selectedVideogame, setSelectedVideogame] = useState([]);
 
-  const closeCharacterModal = () => toggleCharacterModal(false);
-  const openCharacterModal = () => toggleCharacterModal(true);
+  const [searchText, setSearchText] = useState("");
+  const [userName,       setUserName] = useState("");
+  const [userPhotoURL,   setUserPhotoURL] = useState("");
+  const [userTwitterURL, setUserTwitterURL] = useState("");
 
-  const closeGamesModal = () => toggleGamesModal(false);
-  const openGamesModal = () => toggleGamesModal(true);
+  const [techSelection, setTechSelection] = React.useState([]);
 
-  const [showCharacterModal, toggleCharacterModal] = useState(false);
-  const [selectVideogameCharacters, setVideogameCharacters] = useState([]);
-  const [selectVideogameName, setVideogameName] = useState("");
-
-  const handleVideogameSelection = (videogame) => {
-    selectVideogame(videogame)
-    
-  };
-
-
-  const selectVideogame = (videogame) => {
-    setSelectedCharacters([])
-    addVideogame(videogame)
-    setVideogameName(videogame.code)
-
-    switch (videogame.code) {
-      case "sfv":
-        setVideogameCharacters(SFV_CHARACTERS)
-        break;
-      case "ggst":
-        setVideogameCharacters(GGST_CHARACTERS)
-        break;
-      default:
-        setVideogameCharacters([])
-        break;
-    }
-
-    toggleGamesModal(false)
-
-  
-}
-
-const addVideogame = (videogame) => {
-
-  setSelectedVideogame([
-    {id: shortid.generate(), videogame}
-  ])
-  cookies.remove('labVideogame', { path: '/' })
-  cookies.set('labVideogame', videogame.name, { path: '/' })
-}
-
-const addCharacter = (character) => {
-   
-  setSelectedCharacters([
-    ...selectedCharacters,
-    {id: shortid.generate(), character}
-  ])
-}
-
-  useEffect(() => {
-    switch (formFields.clipVideogame) {
-      case "sfv":
-        setCharacters(SFV_CHARACTERS);
-        break;
-      case "ggst":
-        setCharacters(GGST_CHARACTERS);
-        break;
-      default:
-        setCharacters(GGST_CHARACTERS);
-        break;
-    }
-  }, [formFields.clipVideogame]);
 
   useEffect(() => {
     // Runs after EVERY rendering
-    handleFilterSelection(selectedClipType,selectedVideogame,selectedCharacters)
-  },[selectedClipType,selectedVideogame,selectedCharacters]);  
+    handleFilterSelection(techSelection)
+    handleLoggedUser()
+        
+    setFormFields({ ...formFields, clipTech: techSelection })
+  }, [techSelection, searchText]);
 
-  const handleCharacterSelection = (character) => {
-    setCharactersSelected([...charactersSelected, character]);
-    if (charactersSelected.length > 0) {
-      toggleCharacterModal(false);
-    }
-  };
-
-  const handleVideogameDeletion = (videogame) => {
-    deleteSelectedVideogame(videogame)
+  const handleLoggedUser = () => {
+    setUserName(user.displayName)
+    setUserPhotoURL(user.photoURL)
+    setUserTwitterURL(user.reloadUserInfo.screenName)
   }
 
-  const deleteSelectedVideogame = videogameName => {
-    const arrayFilter = selectedVideogame.filter(videogame => videogame.videogame.name !== videogameName)
-    setSelectedVideogame(arrayFilter)
-    setVideogameCharacters([])
-
+  const handleSearchTextChange = (e) => {
+    setSearchText(e.target.value)
   }
 
-  const handleCharacterDeletion = (character) => {
-    deleteSelectedCharacter(character)
+
+  const handleTechSelection = (selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters) => {
+    setTechSelection({selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters})
   }
 
-  const deleteSelectedCharacter = characterName => {
-      const arrayFilter = selectedCharacters.filter(character => character.character.name !== characterName)
-      setSelectedCharacters(arrayFilter)
-  }
+
+  
+  const { user, setUser } = useContext(AuthenticationContext);
 
   const createClip = () => {
-    const { clipVideogame, clipType, clipTitle, clipDescription, clipURL } =
+    const { clipTech, clipTitle, clipDescription, clipURL } =
       formFields;
-    const {
-      displayName,
-      photoURL,
-      reloadUserInfo: { screenName },
-    } = user;
-
+      console.log(
+        {
+          tech: clipTech,
+          url: clipURL,
+          title: clipTitle,
+          description: clipDescription,
+          user: {name: userName,
+                photoURL: userPhotoURL,
+                twitter: userTwitterURL}
+        }
+      )
     createNewClip({
-      videogame: clipVideogame,
-      user: {
-        name: displayName,
-        photoURL,
-        twitter: `https://twitter.com/${screenName}`,
-      },
+      tech: clipTech,
       url: clipURL,
-      type: clipType,
       title: clipTitle,
       description: clipDescription,
-      characters: charactersSelected,
+      user: { name: userName,
+              photoURL: userPhotoURL,
+              twitter: userTwitterURL}
     }).then(() => navigate('/'));
   };
 
@@ -173,36 +97,11 @@ const addCharacter = (character) => {
           <h1>UploadYourTech</h1>
           <Col sm={6}>
             <Form>
-              <Form.Group className="mb-3" controlId="selectVideogame">
-                <Form.Label className="mt-2">Videogame</Form.Label>
-                <Button
-                  onClick={openGamesModal}
-                  variant="outline-primary"
-                  className="ms-2"
-                  disabled={false}
-                >
-                  Add game <PlusCircle className="ms-2" />
-                </Button>
-                <SelectedVideogame
-                    selectedVideogame={selectedVideogame}
-                    handleVideogameDeletion={handleVideogameDeletion}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="selectClipType">
-                <Form.Label className="mt-2">Clip type</Form.Label>
-                <Form.Select
-                  value={formFields.clipType}
-                  onChange={(e) =>
-                    setFormFields({ ...formFields, clipType: e.target.value })
-                  }
-                  aria-label="Select clip type"
-                >
-                  <option value="">Select clip type...</option>
-                  <option value="tech">Tech</option>
-                  <option value="match">Match</option>
-                  <option value="random">Random</option>
-                </Form.Select>
-              </Form.Group>
+                <TechSelector
+                techSelection={techSelection}
+                handleTechSelection={handleTechSelection}
+                techLayout={TECH_LAYOUT.HORIZONTAL}
+              />
               <Form.Group className="mb-3" controlId="uploadFormTitle">
                 <Form.Label className="mt-2">Title</Form.Label>
                 <Form.Control
@@ -235,28 +134,6 @@ const addCharacter = (character) => {
                 </Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="characterSelect">
-                <Form.Label>Characters</Form.Label>
-                <div className="characters-selected">
-                  {charactersSelected.map((character) => (
-                    <div key={character.name} className="character">
-                      <img src={character.image} alt={character.name} />
-                      <span>{character.name}</span>
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  onClick={openCharacterModal}
-                  variant="outline-primary"
-                  style={{ width: "100%" }}
-                  disabled={false}
-                >
-                  Add character <PlusCircle className="ms-2" />
-                </Button>
-                
-                <SelectedCharacters
-                    selectedCharacters={selectedCharacters}
-                    handleCharacterDeletion={handleCharacterDeletion}
-                />
 
                 <Button
                   onClick={createClip}
@@ -292,27 +169,14 @@ const addCharacter = (character) => {
               clipURL={formFields.clipURL}
               clipTitle={formFields.clipTitle}
               clipDescription={formFields.clipDescription}
-              charactersSelected={charactersSelected}
+              clipTech={techSelection}
               userName={user.displayName}
               userPhotoURL={user.photoURL}
-              userTwitterURL={``}
+              userTwitterURL={user.reloadUserInfo.screenName}
             />
           </Col>
         </Row>
       </Container>
-      <CharactersModal
-        showCharacterModal={showCharacterModal}
-        closeCharacterModal={closeCharacterModal}
-        characters={selectVideogameCharacters}
-        handleSelection={handleCharacterSelection}
-        videogame={selectVideogameName}
-      />
-      <GamesModal
-        showGamesModal={showGamesModal}
-        closeGamesModal={closeGamesModal}
-        games={VIDEOGAMES}
-        handleSelection={handleVideogameSelection}
-      />
     </>
   );
 }

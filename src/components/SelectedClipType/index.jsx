@@ -6,9 +6,9 @@ const SelectedClipType = ({
     handleClipTypeSelection
 }) => {
   return (
-    <Form.Group className="m-2" controlId="selectVideogame">
-          <Form.Select aria-label="Select videogame" value={clipType} onChange={handleClipTypeSelection} >
-            <option value="">Clip type...</option>
+    <Form.Group className="w-100 ms-1" controlId="selectClipType">
+          <Form.Select aria-label="Select Clip Type" value={clipType} onChange={handleClipTypeSelection} >
+            <option value="">All types</option>
             <option value="combo">Combo</option>
             <option value="tech">Tech</option>
             <option value="mixup">Mixup</option>

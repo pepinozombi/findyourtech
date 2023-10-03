@@ -9,9 +9,6 @@ const UploadPage = () => {
   const [filterSelection, setFilterSelection] = React.useState([]);
 
   const handleFilterSelection = (selectedClipType,selectedVideogame,selectedCharacters,searchText) => {
-      console.log(selectedClipType)
-      console.log(selectedVideogame)
-      console.log(selectedCharacters)
     }
 
   // function updateClips() {
