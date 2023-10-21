@@ -29,8 +29,8 @@ const ClipsFilter = ({
 
   return (
     <Form>
-      <Row>
-        <Col xs={12} md={12} lg={6} className="mb-2">
+      <Row className="justify-content-center">
+        <Col xs={12} md={12} lg={12} className="mb-2">
           <TechSelector
             techSelection={techSelection}
             handleTechSelection={handleTechSelection}
@@ -38,8 +38,13 @@ const ClipsFilter = ({
           />
         </Col>
         <Col xs={12} md={12} lg={6} className="mb-2">
-          <Form.Group controlId="search" className="w-100 ms-1">
-            <Form.Control type="text" placeholder="Search..." onChange={e => setSearchText(e.target.value)} />
+          <Form.Group controlId="search" className="w-100 ms-1 input-group">
+            <Form.Control 
+              className="search-bar form-control border-end-0" 
+              type="search" 
+              placeholder="BnB, Optimal, Saucy, Midscreen, Corner..." 
+              onChange={e => setSearchText(e.target.value)} 
+            />
           </Form.Group>
         </Col>
       </Row>

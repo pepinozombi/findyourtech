@@ -1,243 +1,74 @@
 import shortid from 'shortid';
-export const SFV_CHARACTERS = [
-  {
-    id: shortid.generate(),
-    name: "Ryu",
-    archetype: "Shoto",
-    image: "https://pbs.twimg.com/media/ET1aEWTWAAY22Qh?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Chun Li",
-    archetype: "Footsies / Neutral",
-    image:
-      "https://pbs.twimg.com/media/ET1aFhsXkAQvRP6?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Nash",
-    archetype: "Rushdown",
-    image:
-      "https://pbs.twimg.com/media/ET1aGUvWAAEiqRf?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "M.Bison",
-    archetype: "Rushdown",
-    image: "https://pbs.twimg.com/media/ET1aHP5X0AAkdk9?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Birdie",
-    archetype: "Grappler",
-    image: "https://pbs.twimg.com/media/ET1dX9uWkAMb0Dn?format=png&name=small",
-  },
-  {
-    name: "Cammy",
-    archetype: "Rushdown",
-    image:
-      "https://pbs.twimg.com/media/ET1dX9xXQAI5P0-?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Ken",
-    archetype: "Rushdown",
-    image:
-      "https://pbs.twimg.com/media/ET1dX92X0AA-Leq?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Necalli",
-    archetype: "Shoto",
-    image:
-      "https://pbs.twimg.com/media/ET1dilkXQAI2iOr?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Vega",
-    archetype: "Rushdown",
-    image: "https://pbs.twimg.com/media/ET1aSHKX0AE8Fl6?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Mika",
-    archetype: "Grappler",
-    image:
-      "https://pbs.twimg.com/media/ET1aVBAWsAAQX-T?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Rashid",
-    archetype: "Rushdown",
-    image:
-      "https://pbs.twimg.com/media/ET1aVBBWkAYBuU1?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Karin",
-    archetype: "Footsies / Neutral",
-    image:
-      "https://pbs.twimg.com/media/ET1acmAXgAAYWG4?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Zangief",
-    archetype: "Grappler",
-    image: "https://pbs.twimg.com/media/ET1agLgWAAE2KfS?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Laura",
-    archetype: "Grappler",
-    image:
-      "https://pbs.twimg.com/media/ET1ahj_WkAILSvg?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Dhalsim",
-    archetype: "Zoner",
-    image:
-      "https://pbs.twimg.com/media/ET1aialX0AE4jsT?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "F.A.N.G",
-    archetype: "Zoner",
-    image: "https://pbs.twimg.com/media/ET1akUzXYAE2bXa?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Alex",
-    archetype: "Grappler",
-    image:
-      "https://pbs.twimg.com/media/ET1aoFQX0AA2n9O?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Guile",
-    archetype: "Zoner",
-    image: "https://pbs.twimg.com/media/ET1apDYXsAQ7k9X?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Ibuki",
-    archetype: "Mixup",
-    image: "https://pbs.twimg.com/media/ET1aqIkXYAUWnWW?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Balrog",
-    archetype: "Balrog",
-    image: "https://pbs.twimg.com/media/ET1bDcFWoAwEy-T?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Juri",
-    archetype: "Rushdown",
-    image:
-      "https://pbs.twimg.com/media/ET1a22BXgAAJVeU?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Urien",
-    archetype: "Rushdown",
-    image: "https://pbs.twimg.com/media/ET1bLzcXsAMkXC_?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Akuma",
-    archetype: "Rushdown",
-    image: "https://pbs.twimg.com/media/ET1bN1EX0AIzWz1?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Kolin",
-    archetype: "Footsies / Neutral",
-    image:
-      "https://pbs.twimg.com/media/ET1bP-NWAAUKMtQ?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Ed",
-    archetype: "Rushdown",
-    image:
-      "https://pbs.twimg.com/media/ET1bTkmXQAIx-Kt?format=png&name=360x360",
-  },
-  {
-    id: shortid.generate(),
-    name: "Abigail",
-    archetype: "Grappler",
-    image: "https://pbs.twimg.com/media/ET1bUqRWoAEnv_D?format=png&name=small",
-  },
-  {
-    id: shortid.generate(),
-    name: "Menat",
-    archetype: "Zoner",
-    image:
-      "https://pbs.twimg.com/media/ET1bWNiXQAEXWdi?format=png&name=360x360",
-  },
-];
-
 
 export const GGST_CHARACTERS = [
   {
     id: shortid.generate(),
     name: "Sol",
     archetype: "Balance",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive.jpg",
   },
   {
     id: shortid.generate(),
     name: "Ky",
     archetype: "Balance",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_kyk.jpg",
   },
   {
     id: shortid.generate(),
     name: "May",
     archetype: "Balance",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_may-1.jpg",
   },
   {
     id: shortid.generate(),
     name: "Axl",
     archetype: "Long Range",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_axl.jpg",
   },
   {
     id: shortid.generate(),
     name: "Chipp",
     archetype: "High Speed",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_chp.jpg",
   },
   {
     id: shortid.generate(),
     name: "Potemkin",
     archetype: "Power Throw",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_pot.jpg",
   },
   {
     id: shortid.generate(),
     name: "Faust",
     archetype: "Unique",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_fau.jpg",
   },
   {
     id: shortid.generate(),
     name: "Millia",
     archetype: "High Speed",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_mll.jpg",
   },
   {
     id: shortid.generate(),
     name: "Zato",
     archetype: "Technical",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_zat.jpg",
   },
   {
     id: shortid.generate(),
     name: "Ramlethal",
     archetype: "Shooting",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_ram-1.jpg",
   },
   {
@@ -250,56 +81,93 @@ export const GGST_CHARACTERS = [
     id: shortid.generate(),
     name: "Nagoriyuki",
     archetype: "One Shot",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_nag.jpg",
   },
   {
     id: shortid.generate(),
     name: "Giovanna",
     archetype: "Rush",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2020/09/archive_gio.jpg",
   },
   {
     name: "Anji",
     archetype: "Balance",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2021/03/anji-306x305.jpg",
   },
   {
     id: shortid.generate(),
     name: "I-No",
     archetype: "Rush",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2021/03/rxx82us-1-306x305.jpg",
   },
   {
     id: shortid.generate(),
     name: "Goldlewis",
     archetype: "Power",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2021/07/gol-306x305.jpg",
   },
   {
     id: shortid.generate(),
     name: "Jack-O'",
     archetype: "Technical",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2021/08/jko.jpg",
   },
   {
     id: shortid.generate(),
     name: "Happy Chaos",
     archetype: "Shooting",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2021/11/82nCeh3s.jpg",
   },
   {
     id: shortid.generate(),
     name: "Baiken",
     archetype: "Balance",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2022/01/94gvos0f.jpg",
   },
   {
     id: shortid.generate(),
     name: "Testament",
     archetype: "Balance",
+    color: "",
     image: "https://www.guiltygear.com/ggst/en/wordpress/wp-content/uploads/2022/03/icon-1ubduiak.jpg",
   },
   
 ];
 
-export default {GGST_CHARACTERS, SFV_CHARACTERS};
+export const PL_CHARACTERS = [
+  {
+    id: shortid.generate(),
+    name: "Ahri",
+    archetype: "Rushdown",
+    image: "/img/frames/project-l/ahri-frame-2.png",
+  },
+  {
+    id: shortid.generate(),
+    name: "Darius",
+    archetype: "Power",
+    image: "/img/frames/project-l/darius-frame-2.png",
+  },
+  {
+    id: shortid.generate(),
+    name: "Ekko",
+    archetype: "Rushdown",
+    image: "/img/frames/project-l/ekko-frame-2.png",
+  },
+  {
+    id: shortid.generate(),
+    name: "Yasuo",
+    archetype: "Shoto",
+    image: "/img/frames/project-l/yasuo-frame-2.png",
+  }
+];
+
+
+export default {GGST_CHARACTERS, PL_CHARACTERS};

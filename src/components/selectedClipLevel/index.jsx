@@ -6,8 +6,8 @@ const SelectedClipLevel = ({
     handleClipLevelSelection
 }) => {
   return (
-    <Form.Group className="w-100 ms-1" controlId="selectClipLevel">
-          <Form.Select aria-label="Select clip level" value={clipLevel} onChange={handleClipLevelSelection} >
+    <Form.Group controlId="selectClipLevel" style={{maxWidth: '175px'}}>
+          <Form.Select aria-label="Select clip level" value={clipLevel} onChange={handleClipLevelSelection}>
             <option value="">All levels</option>
             <option value="basic">Basic</option>
             <option value="intermediate">Intermediate</option>

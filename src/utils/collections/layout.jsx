@@ -1,4 +1,5 @@
 export const TECH_LAYOUT = Object.freeze({
     HORIZONTAL: 'horizontal',
-    VERTICAL: 'vertical'
+    VERTICAL: 'vertical',
+    ROW: 'row'
 })

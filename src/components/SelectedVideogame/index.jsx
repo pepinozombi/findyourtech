@@ -11,30 +11,28 @@ const SelectedVideogame = ({
           selectedVideogame.length === 0 ? (
             <div></div>
           ):(
-            <div className="d-flex flex-row bd-highlight">
+            <div className="d-flex justify-content-center bd-highlight">
               <div className="p-1 bd-highlight">Videogame: </div>
                 {
-                  selectedVideogame.map(item => (
                     <div 
                       className="p-1 bd-highlight"
-                      key={item.id}
+                      key={selectedVideogame.id}
                     >
                       <span 
                       className="selected-item" 
                       
                       > 
                         <span>
-                          {item.videogame.name}
+                          {selectedVideogame.name}
                         </span>
                         <span 
                           className="x-button" 
-                          onClick={() => handleVideogameDeletion(item.videogame.name)}
+                          onClick={() => handleVideogameDeletion(selectedVideogame)}
                         >
                           <X></X>
                         </span>
                       </span>
-                    </div>
-                  ))}
+                    </div>}
             </div>
           )
         }

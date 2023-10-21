@@ -63,8 +63,8 @@ const ClipItemCard = ({
         {clipTech.selectedVideogame !== undefined ? (clipTech.selectedVideogame.map((videogame, i) => (
           <ListGroupItem className="characters-selected" key={i}>
             <div className="character">
-              <img src={videogame.videogame.image} alt={videogame.videogame.name} />
-              <span>{videogame.videogame.name}</span>
+              <img src={videogame.image} alt={videogame.name} />
+              <span>{videogame.name}</span>
             </div>
           </ListGroupItem>
         ))) : (
@@ -76,8 +76,8 @@ const ClipItemCard = ({
         {clipTech.selectedCharacters !== undefined ? (clipTech.selectedCharacters.map((character, i) => (
           <ListGroupItem className="characters-selected" key={i}>
             <div className="character">
-              <img src={character.character.image} alt={character.character.name} />
-              <span>{character.character.name}</span>
+              <img src={character.image} alt={character.name} />
+              <span>{character.name}</span>
             </div>
           </ListGroupItem>
         ))) : (

@@ -1,5 +1,9 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
+import shortid from 'shortid';
+import CharacterSelectFrames from "../CharacterSelectFrames";
+import CharacterFrames from "../CharacterFrames";
+import { useState } from "react";
 
 const CharactersModal = ({
   showCharacterModal,
@@ -7,7 +11,19 @@ const CharactersModal = ({
   characters,
   handleSelection,
   videogame,
+  charactersByTeam,
+  selectedItemId,
+  handleCharacterFrameSelection,
+  selectedCharacters
 }) => {
+
+  const player1 = "P1";
+  const player2 = "P2";
+
+  const handleCharacterSelectionOnModal = (itemId) => {
+    handleCharacterFrameSelection(itemId);
+  };
+
   return (
     <Modal
       size="lg"
@@ -24,33 +40,42 @@ const CharactersModal = ({
         </Modal.Body>
       ):(
         <Modal.Body className="character-modal">
-        {characters.map((character) => (
-          <div
-            onClick={() => handleSelection(character)}
-            className="image-wrapper"
-            key={character.name}
-          >
-            <img
-              style={{ maxWidth: "100%" }}
-              src={character.image}
-              alt={character.name}
+          <div className="container">
+            <div className="row">
+              <div className="col-5 col-md-5 align-items-center">
+                
+                  <CharacterSelectFrames
+                    charactersByTeam={charactersByTeam ? charactersByTeam : 0}
+                    player={player1}
+                    handleCharacterFrameSelectionInFrame={handleCharacterSelectionOnModal}
+                    selectedItemId={selectedItemId}
+                    selectedCharacters={selectedCharacters}
+                  />
+              </div>
+              <div className="col-2 d-flex justify-content-center">
+                <div className="text-center vs">
+                </div>
+              </div>
+              <div className="col-5 col-md-5 align-items-center">
+                  <CharacterSelectFrames
+                  charactersByTeam={charactersByTeam ? charactersByTeam : 0}
+                  player={player2}
+                  handleCharacterFrameSelectionInFrame={handleCharacterSelectionOnModal}
+                  selectedItemId={selectedItemId}
+                  selectedCharacters={selectedCharacters}
+                />
+              </div>
+            </div>
+            <CharacterFrames
+              characters={characters}
+              handleSelection={handleSelection}
             />
-          </div>
-        ))}
+        </div>
         </Modal.Body>
       )}
       
       <Modal.Footer>
         Images credit goes to{" "}
-        {videogame === "sfv" && (
-          <a
-            target="_blank"
-            href="https://twitter.com/RelusionH"
-            rel="noreferrer"
-          >
-            RelusionH
-          </a>
-        )}
         {videogame === "ggst" && (
           <a
             target="_blank"
@@ -58,6 +83,15 @@ const CharactersModal = ({
             rel="noreferrer"
           >
             GGST official page
+          </a>
+        )}
+        {videogame === "project-l" && (
+          <a
+            target="_blank"
+            href="https://project-l.riotgames.com/es-e"
+            rel="noreferrer"
+          >
+            Project L official page
           </a>
         )}
       </Modal.Footer>
