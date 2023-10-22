@@ -7,7 +7,6 @@ import { VIDEOGAMES } from "../../utils/collections/videogames";
 import CharactersModal from "../CharactersModal";
 import GamesModal from "../GamesModal";
 import SelectedClipType from "../SelectedClipType";
-import SelectedVideogame from "../SelectedVideogame";
 import SelectedCharacters from "../SelectedCharacters";
 import Cookies from 'universal-cookie';
 import SelectedClipLevel from "../selectedClipLevel";
@@ -29,8 +28,8 @@ const TechSelector = ({
   const [selectedClipType, setSelectedClipType] = useState("");
   const [selectedClipLevel, setSelectedClipLevel] = useState("");
   const [selectedVideogame, setSelectedVideogame] = useState([]);
-  const [selectedCharacters, setSelectedCharacters] = useState([]);
-
+  //const [selectedCharacters, setSelectedCharacters] = useState([]);
+  
   const closeCharacterModal = () => toggleCharacterModal(false);
   const openCharacterModal = () => {
     toggleCharacterModal(true)
@@ -41,9 +40,12 @@ const TechSelector = ({
 
 
   useEffect(() => {
+    if(Object.keys(characterSelect).length === 0) {
+      selectVideogame(VIDEOGAMES.find(videojuego => videojuego.code === process.env.REACT_APP_VIDEOGAME_CODE))
+    }
     // Runs after EVERY rendering
-    handleTechSelection(selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters)
-  }, [selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters]);
+    handleTechSelection(selectedClipType, selectedClipLevel, selectedVideogame, characterSelect)
+  }, [selectedClipType, selectedClipLevel, selectedVideogame, characterSelect]);
 
   const handleClipTypeSelection = (e) => {
     setSelectedClipType(e.target.value)
@@ -60,7 +62,6 @@ const TechSelector = ({
 
   const selectVideogame = (videogame) => {
     //states
-    setSelectedCharacters([])
     setVideogameName(videogame.code)
     
     setCharactersByTeam(videogame.charactersByTeam)
@@ -117,9 +118,8 @@ const TechSelector = ({
 
   const handleCharacterSelection = (character) => {
 
-    
     let claveSeleccionada = selectedItemId;
-    console.log(selectedItemId == null);
+
     //si no hay selectedItemId buscamos el primero vacío
     if (selectedItemId == null) {
       
@@ -137,8 +137,6 @@ const TechSelector = ({
     setCharacterSelect(updateCharacterSelect)
 
     setNextItemId(claveSeleccionada);
-
-    console.log(updateCharacterSelect);
   };
 
   //obtenemos el siguiente objeto del characterSelect.
@@ -157,7 +155,6 @@ const TechSelector = ({
   }
 
   const handleCharacterFrameSelection = (itemId) => {
-    console.log(itemId)
     setSelectedItemId(itemId);
   };
 
@@ -182,8 +179,6 @@ const TechSelector = ({
     updateCharacterSelect[characterId] = {};
     
     setCharacterSelect(updateCharacterSelect)
-
-    console.log(updateCharacterSelect);
   }
 
   return (
@@ -200,7 +195,7 @@ const TechSelector = ({
           handleClipLevelSelection={handleClipLevelSelection}
         />
 
-        <Button
+        {/* <Button
           onClick={openGamesModal}
           variant="outline-primary"
           className="w-100 ms-1 btn-tech mb-2"
@@ -208,7 +203,7 @@ const TechSelector = ({
           style={{maxWidth: '175px', fontSize: '1em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
         >
           Select game <PlusCircle className="ms-2" />
-        </Button>
+        </Button> */}
         <Button
           onClick={openCharacterModal}
           variant="outline-primary"
@@ -238,10 +233,10 @@ const TechSelector = ({
         selectedCharacters={characterSelect}
       />
 
-      <SelectedVideogame
+      {/* <SelectedVideogame
         selectedVideogame={selectedVideogame}
         handleVideogameDeletion={handleVideogameDeletion}
-      />
+      /> */}
 
       <SelectedCharacters
         characterSelect={characterSelect}

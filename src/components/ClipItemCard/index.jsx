@@ -1,5 +1,7 @@
-import { Card, Image, ListGroup, ListGroupItem, Stack } from "react-bootstrap";
+import { Card, Image, Stack } from "react-bootstrap";
+import ClipItemCardCharacters from "../ClipItemCardCharacters";
 import ReactPlayer from "react-player";
+import shortid from 'shortid';
 
 const ClipItemCard = ({
   clipURL,
@@ -9,9 +11,9 @@ const ClipItemCard = ({
   userName,
   userPhotoURL,
   userTwitterURL,
+  selectedVideogameVersion
 }) => {
   const isTwitchClip = (clipURL) => clipURL.match("twitch");
-
 
   return (
     <Card style={{ margin: "10px" }}>
@@ -33,7 +35,7 @@ const ClipItemCard = ({
       <Card.Body style={{ minHeight: "120px" }}>
         <Card.Title>{clipTitle}</Card.Title>
         <Card.Text>{clipDescription}</Card.Text>
-          <Stack direction="horizontal">
+          <Stack direction="horizontal" className="flex-container">
         {
           clipTech.selectedClipType !== "" ? (
             <div className="p-1 bd-highlight">
@@ -57,34 +59,42 @@ const ClipItemCard = ({
             <></>
           )
         }
+        {
+          selectedVideogameVersion !== "" ? (
+            <div className="p-1 bd-highlight">
+              <span className="selected-item px-1"> 
+                  v. {selectedVideogameVersion}
+              </span>
+            </div>
+          ): (
+            <></>
+          )
+        }
         </Stack>
       </Card.Body>
-      <ListGroup className="list-group-flush">
-        {clipTech.selectedVideogame !== undefined ? (clipTech.selectedVideogame.map((videogame, i) => (
-          <ListGroupItem className="characters-selected" key={i}>
+      {/* <ListGroup className="list-group-flush">
+        {clipTech.selectedVideogame !== undefined ? (
+          <ListGroupItem className="characters-selected" key={clipTech.selectedVideogame.name}>
             <div className="character">
-              <img src={videogame.image} alt={videogame.name} />
-              <span>{videogame.name}</span>
+              <img src={clipTech.selectedVideogame.image} alt={clipTech.selectedVideogame.name} />
+              <span>{clipTech.selectedVideogame.name}</span>
             </div>
-          </ListGroupItem>
-        ))) : (
+          </ListGroupItem>) : (
           <>
           </>
         )}
-      </ListGroup>
-      <ListGroup className="list-group-flush" horizontal>
-        {clipTech.selectedCharacters !== undefined ? (clipTech.selectedCharacters.map((character, i) => (
-          <ListGroupItem className="characters-selected" key={i}>
-            <div className="character">
-              <img src={character.image} alt={character.name} />
-              <span>{character.name}</span>
-            </div>
-          </ListGroupItem>
-        ))) : (
+      </ListGroup> */}
+        {clipTech?.characterSelect && Object.keys(clipTech?.characterSelect).length !== 0 ? (
+          <ClipItemCardCharacters
+            characterSelect={clipTech?.characterSelect}
+            charactersByTeam={clipTech?.selectedVideogame.charactersByTeam}
+            key={shortid.generate()}
+            tooltipkey={shortid.generate()}
+          />
+          ) : (
           <>
           </>
         )}
-      </ListGroup>
       <Card.Body>
         {userName && userPhotoURL && (
           <Card.Link target="_blank" href={"https://twitter.com/" + userTwitterURL}>

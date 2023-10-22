@@ -154,7 +154,74 @@
     align-self: center;
 }
 
+.vs-micro {
+    max-width: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    width:100%;
+    height: 100%;
+    background-size: contain;
+    background-image: url('/public/img/vs.png');
+    align-self: center;
+}
+
 .select-clip {
     min-width: 150px;
 }
+
+.characterFrame-micro {
+    border-radius: 10px;
+    margin: 5px;
+    max-width: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    border:2px solid #b58900;
+    cursor:pointer;
+    overflow:hidden;
+    background-size: contain;
+    background-image: url('/public/img/SurgeOfLight.png');
+    padding: 2px !important;
+    background-size: 100%;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+}
+
+.characterFrame-micro:hover {
+    border:3px solid #d33682;
+    -webkit-transform: scale(1.1,1.1); 
+    transform: scale(1.1,1.1);
+}
+
+.characterFrame-micro:hover .characterFrameContent-micro{
+    opacity: 1;
+}
+
+.characterFrameContent-micro {
+    border-radius: 5px;
+    width:100%;
+    height: 100%;
+    white-space: nowrap; /* Evitará que el texto se desborde si es demasiado largo */
+    overflow: hidden; /* Ocultar el texto que se desborde */
+    color:#d33682;
+    text-shadow: 2px 2px 0px rgba(0,0,0,1); /* Agrega un sombreado negro alrededor del texto */
+    text-wrap: wrap;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.characterFrameContent-micro:hover {
+    opacity: 1;
+}
+
+.characterFrameContent-micro div {
+    width:100%;
+    height: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
 

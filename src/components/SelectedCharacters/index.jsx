@@ -29,8 +29,8 @@ const SelectedCharacters = ({
       {charactersByTeam === 0 ? (
         <div></div>
       ) : (
-        <div className="row">
-          <div className='col-5 col-md-5 align-items-center'>
+        <div className="row justify-content-center">
+          <div className='col-2 col-md-2 align-items-center'>
             <div className="row justify-content-center">
           {
               hayPersonajesEnP1 &&
@@ -62,7 +62,7 @@ const SelectedCharacters = ({
             <div className="text-center vs">
             </div>
            </div>}
-          <div className='col-5 col-md-5 align-items-center'>
+          <div className='col-2 col-md-2 align-items-center'>
             <div className="row justify-content-center">
             {
               hayPersonajesEnP2 &&

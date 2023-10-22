@@ -4,7 +4,7 @@ import ClipItemCard from "../../components/ClipItemCard";
 //import getAllClips from "../../functions/getAllClips";
 import ClipUpload from "../../components/ClipUpload";
 
-const UploadPage = () => {
+const Upload = () => {
   const [clips, setClips] = React.useState([]);
   const [filterSelection, setFilterSelection] = React.useState([]);
 
@@ -45,4 +45,4 @@ const UploadPage = () => {
   );
 };
 
-export default UploadPage;
+export default Upload;

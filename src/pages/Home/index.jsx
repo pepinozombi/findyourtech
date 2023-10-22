@@ -53,6 +53,7 @@ const Home = () => {
                 userName={clip.user.name}
                 userPhotoURL={clip.user.photoURL}
                 userTwitterURL={clip.user.twitter}
+                selectedVideogameVersion={clip.selectedVideogameVersion}
               />
             </Col>
           ))}

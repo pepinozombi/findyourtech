@@ -5,15 +5,15 @@ import createNewClip from "../../functions/createNewClip";
 import { useNavigate } from "react-router";
 import Cookies from 'universal-cookie';
 import TechSelector from '../TechSelector'
+import GameVersions from '../GameVersions'
 import { TECH_LAYOUT } from "../../utils/collections/layout";
 import { AuthenticationContext } from "../../App";
+import { VIDEOGAME_VERSIONS } from '../../utils/collections/videogameVersions'
 
 export default function ClipUpload({
     filterSelection,
     handleFilterSelection}) {
   const navigate = useNavigate();
-
-  
 
   const [charactersSelected, setCharactersSelected] = useState([]);
   const [characters, setCharacters] = useState([]);
@@ -26,7 +26,6 @@ export default function ClipUpload({
     userPhotoURL: "", 
     userTwitterURL: ""
   });
-  
 
   const cookies = new Cookies();
 
@@ -34,22 +33,23 @@ export default function ClipUpload({
   const [userName,       setUserName] = useState("");
   const [userPhotoURL,   setUserPhotoURL] = useState("");
   const [userTwitterURL, setUserTwitterURL] = useState("");
+  const [selectedVideogameVersion, setSelectedVideogameVersion] = useState("");
 
   const [techSelection, setTechSelection] = React.useState([]);
-
+  const { user, setUser } = useContext(AuthenticationContext);
 
   useEffect(() => {
     // Runs after EVERY rendering
     handleFilterSelection(techSelection)
     handleLoggedUser()
-        
+    
     setFormFields({ ...formFields, clipTech: techSelection })
   }, [techSelection, searchText]);
 
   const handleLoggedUser = () => {
     setUserName(user.displayName)
     setUserPhotoURL(user.photoURL)
-    setUserTwitterURL(user.reloadUserInfo.screenName)
+    //setUserTwitterURL(user.reloadUserInfo.screenName)
   }
 
   const handleSearchTextChange = (e) => {
@@ -57,33 +57,43 @@ export default function ClipUpload({
   }
 
 
-  const handleTechSelection = (selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters) => {
-    setTechSelection({selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters})
+  const handleTechSelection = (selectedClipType, selectedClipLevel, selectedVideogame, characterSelect) => {
+    setTechSelection({selectedClipType, selectedClipLevel, selectedVideogame, characterSelect})
   }
 
-
-  
-  const { user, setUser } = useContext(AuthenticationContext);
+  const handleGameVersionSelection = (e) => {
+    setSelectedVideogameVersion(e)
+  }
 
   const createClip = () => {
     const { clipTech, clipTitle, clipDescription, clipURL } =
       formFields;
-      console.log(
-        {
-          tech: clipTech,
-          url: clipURL,
-          title: clipTitle,
-          description: clipDescription,
-          user: {name: userName,
-                photoURL: userPhotoURL,
-                twitter: userTwitterURL}
-        }
-      )
+
+      let defaultVersion = selectedVideogameVersion;
+      if(defaultVersion === "") {
+        defaultVersion = VIDEOGAME_VERSIONS[clipTech.selectedVideogame?.code][0].version;
+      }
+
+      // console.log(
+      //   {
+      //     tech: clipTech,
+      //     url: clipURL,
+      //     title: clipTitle,
+      //     description: clipDescription,
+      //     titleDescription: clipTitle + clipDescription,
+      //     selectedVideogameVersion: defaultVersion,
+      //     user: {name: userName,
+      //           photoURL: userPhotoURL,
+      //           twitter: userTwitterURL}
+      //   }
+      // )
     createNewClip({
       tech: clipTech,
       url: clipURL,
       title: clipTitle,
       description: clipDescription,
+      titleDescription: clipTitle + clipDescription,
+      selectedVideogameVersion: selectedVideogameVersion,
       user: { name: userName,
               photoURL: userPhotoURL,
               twitter: userTwitterURL}
@@ -133,6 +143,11 @@ export default function ClipUpload({
                   your match moments.
                 </Form.Text>
               </Form.Group>
+              <GameVersions
+                selectedVideogameVersion={selectedVideogameVersion}
+                videogameCode={techSelection.selectedVideogame?.code}
+                handleGameVersionSelection={handleGameVersionSelection}
+              />
               <Form.Group className="mb-3" controlId="characterSelect">
 
                 <Button
@@ -172,7 +187,8 @@ export default function ClipUpload({
               clipTech={techSelection}
               userName={user.displayName}
               userPhotoURL={user.photoURL}
-              userTwitterURL={user.reloadUserInfo.screenName}
+              userTwitterURL={user.reloadUserInfo?.screenName || ''}
+              selectedVideogameVersion={selectedVideogameVersion || ''}
             />
           </Col>
         </Row>
