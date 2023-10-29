@@ -3,21 +3,25 @@ import { Container, Row, Col } from "react-bootstrap";
 import ClipItemCard from "../../components/ClipItemCard";
 import ClipsFilter from "../../components/ClipsFIlter";
 import getAllClips from "../../functions/getAllClips";
+import { GridLoader } from "react-spinners";
 
 const Home = () => {
   const [clips, setClips] = React.useState([]);
   const [filterSelection, setFilterSelection] = React.useState([]);
-  const [techSelection, setTechSelection] = React.useState([]);
-  const [searchText, setSearchText] = React.useState("");
+  const [techSelectionHome, setTechSelectionHome] = React.useState([]);
+  const [searchTextHome, setSearchTextHome] = React.useState("");
   var timeOut;
 
   const handleFilterSelection = (techSelection, searchText) => {
+    console.log('actualizando...');
+    setClips(null);
     // Cancela el temporizador
     clearTimeout(timeOut);
-  
+     //console.log(techSelection);
+    // console.log(searchText);
     // Actualiza el estado y utiliza la función de retorno
-    setTechSelection(techSelection)
-    setSearchText(searchText)
+    setTechSelectionHome(techSelection)
+    setSearchTextHome(searchText)
 
     timeOut = setTimeout(function () {
       getAllClips(
@@ -42,7 +46,7 @@ const Home = () => {
         /> }
       </Row>
       <Row>
-        {clips &&
+        {clips ? (
           clips.map((clip, i) => (
             <Col md={4} key={i}>
               <ClipItemCard
@@ -53,10 +57,17 @@ const Home = () => {
                 userName={clip.user.name}
                 userPhotoURL={clip.user.photoURL}
                 userTwitterURL={clip.user.twitter}
-                selectedVideogameVersion={clip.selectedVideogameVersion}
+                selectedVideogameVersion={clip.indexes.selectedVideogameVersion}
+                createdAt={clip.createdAt}
               />
             </Col>
-          ))}
+          ))
+        ) : (
+          // Muestra el spinner o cualquier otro indicador de carga
+          <GridLoader
+            color="#250043"
+          />
+        )}
       </Row>
     </Container>
   );

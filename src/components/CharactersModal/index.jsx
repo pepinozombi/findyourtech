@@ -32,7 +32,9 @@ const CharactersModal = ({
       onHide={closeCharacterModal}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Select your character</Modal.Title>
+      <div className="scroll-container">
+        <div className="scroll-text">CHOOSE YOUR CHARACTERS</div>
+      </div>
       </Modal.Header>
       {characters.length === 0 ? (
         <Modal.Body className="character-modal">

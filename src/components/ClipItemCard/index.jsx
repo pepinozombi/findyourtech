@@ -2,6 +2,9 @@ import { Card, Image, Stack } from "react-bootstrap";
 import ClipItemCardCharacters from "../ClipItemCardCharacters";
 import ReactPlayer from "react-player";
 import shortid from 'shortid';
+import obtenerTiempoTranscurrido from "../../functions/obtenerTiempoTranscurrido";
+import truncate from "../../functions/truncate";
+import { Clock } from "react-bootstrap-icons";
 
 const ClipItemCard = ({
   clipURL,
@@ -11,9 +14,11 @@ const ClipItemCard = ({
   userName,
   userPhotoURL,
   userTwitterURL,
-  selectedVideogameVersion
+  selectedVideogameVersion,
+  createdAt
 }) => {
   const isTwitchClip = (clipURL) => clipURL.match("twitch");
+  const fecha = createdAt && obtenerTiempoTranscurrido(new Date(createdAt.seconds * 1000 + Math.round(createdAt.nanoseconds / 1000000)));
 
   return (
     <Card style={{ margin: "10px" }}>
@@ -34,7 +39,16 @@ const ClipItemCard = ({
       )}
       <Card.Body style={{ minHeight: "120px" }}>
         <Card.Title>{clipTitle}</Card.Title>
-        <Card.Text>{clipDescription}</Card.Text>
+        <Card.Text>
+          {
+            truncate(clipDescription, 100)
+          }
+        </Card.Text>
+        {createdAt &&
+        <Card.Text>
+          <Clock /> {fecha}
+        </Card.Text>
+        }
           <Stack direction="horizontal" className="flex-container">
         {
           clipTech.selectedClipType !== "" ? (
@@ -72,18 +86,6 @@ const ClipItemCard = ({
         }
         </Stack>
       </Card.Body>
-      {/* <ListGroup className="list-group-flush">
-        {clipTech.selectedVideogame !== undefined ? (
-          <ListGroupItem className="characters-selected" key={clipTech.selectedVideogame.name}>
-            <div className="character">
-              <img src={clipTech.selectedVideogame.image} alt={clipTech.selectedVideogame.name} />
-              <span>{clipTech.selectedVideogame.name}</span>
-            </div>
-          </ListGroupItem>) : (
-          <>
-          </>
-        )}
-      </ListGroup> */}
         {clipTech?.characterSelect && Object.keys(clipTech?.characterSelect).length !== 0 ? (
           <ClipItemCardCharacters
             characterSelect={clipTech?.characterSelect}

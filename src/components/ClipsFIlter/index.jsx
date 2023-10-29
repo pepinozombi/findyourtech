@@ -19,13 +19,13 @@ const ClipsFilter = ({
 
   const handleSearchTextChange = (e) => {
     setSearchText(e.target.value)
-    handleFilterSelection(techSelection, e.target.value)
+    //handleFilterSelection(techSelection, e.target.value)
   }
 
   const handleTechSelection = (selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters) => {
     let newTechSelection = {selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters}
     setTechSelection({selectedClipType, selectedClipLevel, selectedVideogame, selectedCharacters})
-    handleFilterSelection(newTechSelection, searchText)
+    //handleFilterSelection(newTechSelection, searchText)
   }
 
   return (

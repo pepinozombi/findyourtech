@@ -69,10 +69,34 @@ export default function ClipUpload({
     const { clipTech, clipTitle, clipDescription, clipURL } =
       formFields;
 
-      let defaultVersion = selectedVideogameVersion;
-      if(defaultVersion === "") {
-        defaultVersion = VIDEOGAME_VERSIONS[clipTech.selectedVideogame?.code][0].version;
+    let defaultVersion = selectedVideogameVersion;
+    if(defaultVersion === "") {
+      defaultVersion = VIDEOGAME_VERSIONS[clipTech.selectedVideogame?.code][0].version;
+    }
+
+    let arrayP1 = [];
+    let arrayP2 = [];
+    
+    let characterData = clipTech.characterSelect;
+
+    for (const key in characterData) {
+      if (key.startsWith('P1_') && characterData[key]?.name) {
+        arrayP1.push(characterData[key].name);
+      } else if (key.startsWith('P2_') && characterData[key]?.name) {
+        arrayP2.push(characterData[key].name);
       }
+    }
+
+    let indexes = {
+      videogame: clipTech.selectedVideogame.code,
+      selectedVideogameVersion: defaultVersion,
+      titleDescription: clipTitle + clipDescription,
+      uid: user.uid,
+      charactersP1: arrayP1,
+      charactersP2: arrayP2
+    }
+
+      //  console.log(indexes);
 
       // console.log(
       //   {
@@ -87,13 +111,13 @@ export default function ClipUpload({
       //           twitter: userTwitterURL}
       //   }
       // )
+      
     createNewClip({
       tech: clipTech,
       url: clipURL,
       title: clipTitle,
       description: clipDescription,
-      titleDescription: clipTitle + clipDescription,
-      selectedVideogameVersion: selectedVideogameVersion,
+      indexes: indexes,
       user: { name: userName,
               photoURL: userPhotoURL,
               twitter: userTwitterURL}
