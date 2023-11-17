@@ -5,10 +5,10 @@ export default function obtenerTiempoTranscurrido(fecha) {
   const diferenciaDias = differenceInDays(fecha, hoy);
 
   if (diferenciaDias === 0) {
-    return 'Hoy';
+    return 'Today';
   } else if (diferenciaDias < 0) {
-    return `Hace ${formatDistanceToNow(fecha)}`
+    return `${formatDistanceToNow(fecha)} ago`
   } else {
-    return `Dentro de ${formatDistanceToNow(fecha)}`
+    return `In ${formatDistanceToNow(fecha)}`
   }
 }

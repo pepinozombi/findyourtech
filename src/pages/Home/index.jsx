@@ -13,12 +13,9 @@ const Home = () => {
   var timeOut;
 
   const handleFilterSelection = (techSelection, searchText) => {
-    console.log('actualizando...');
     setClips(null);
     // Cancela el temporizador
     clearTimeout(timeOut);
-     //console.log(techSelection);
-    // console.log(searchText);
     // Actualiza el estado y utiliza la función de retorno
     setTechSelectionHome(techSelection)
     setSearchTextHome(searchText)
@@ -27,15 +24,9 @@ const Home = () => {
       getAllClips(
         techSelection,
         searchText
-      ).then((clips) => {setClips(clips);});
+      ).then((clips) => {setClips(clips);console.log(clips);});
     }, 1000);
   };
-
-  function updateClips() {
-    
-  }
-
-  useEffect(() => updateClips(), []);
 
   return (
     <Container className="mt-4 mb-4">
@@ -50,15 +41,14 @@ const Home = () => {
           clips.map((clip, i) => (
             <Col md={4} key={i}>
               <ClipItemCard
+                clipId={clip.id}
                 clipURL={clip.url}
                 clipTitle={clip.title}
                 clipDescription={clip.description}
                 clipTech={clip.tech}
-                userName={clip.user.name}
-                userPhotoURL={clip.user.photoURL}
-                userTwitterURL={clip.user.twitter}
                 selectedVideogameVersion={clip.indexes.selectedVideogameVersion}
                 createdAt={clip.createdAt}
+                user={clip.user}
               />
             </Col>
           ))

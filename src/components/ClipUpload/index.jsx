@@ -9,6 +9,7 @@ import GameVersions from '../GameVersions'
 import { TECH_LAYOUT } from "../../utils/collections/layout";
 import { AuthenticationContext } from "../../App";
 import { VIDEOGAME_VERSIONS } from '../../utils/collections/videogameVersions'
+import getUserByUID from "../../functions/getUserByUID";
 
 export default function ClipUpload({
     filterSelection,
@@ -22,21 +23,33 @@ export default function ClipUpload({
     clipTitle: "",
     clipDescription: "",
     clipURL: "",
-    userName: "", 
-    userPhotoURL: "", 
-    userTwitterURL: ""
+    user: ""
   });
 
   const cookies = new Cookies();
 
   const [searchText, setSearchText] = useState("");
-  const [userName,       setUserName] = useState("");
-  const [userPhotoURL,   setUserPhotoURL] = useState("");
-  const [userTwitterURL, setUserTwitterURL] = useState("");
   const [selectedVideogameVersion, setSelectedVideogameVersion] = useState("");
 
   const [techSelection, setTechSelection] = React.useState([]);
   const { user, setUser } = useContext(AuthenticationContext);
+  const [userProps, setUserProps] = useState(null);
+  const [uniqueName, setUniqueName] = useState(null);
+
+  useEffect(() => {
+    // Comprobar si el usuario está autenticado
+    if (user?.uid) {
+        // Realizar la consulta a Firebase para obtener UserProps
+        // Sustituye 'tuConsultaAFirebase' con la consulta real a tu colección UserProps
+        getUserByUID(user.uid)
+          .then((userPropsData) => {
+            setUniqueName(userPropsData.data.uniqueName);
+        })
+        .catch((error) => {
+            console.error("Error al cargar UserProps:", error);
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     // Runs after EVERY rendering
@@ -47,8 +60,6 @@ export default function ClipUpload({
   }, [techSelection, searchText]);
 
   const handleLoggedUser = () => {
-    setUserName(user.displayName)
-    setUserPhotoURL(user.photoURL)
     //setUserTwitterURL(user.reloadUserInfo.screenName)
   }
 
@@ -100,15 +111,12 @@ export default function ClipUpload({
 
       // console.log(
       //   {
-      //     tech: clipTech,
-      //     url: clipURL,
-      //     title: clipTitle,
-      //     description: clipDescription,
-      //     titleDescription: clipTitle + clipDescription,
-      //     selectedVideogameVersion: defaultVersion,
-      //     user: {name: userName,
-      //           photoURL: userPhotoURL,
-      //           twitter: userTwitterURL}
+        // tech: clipTech,
+        // url: clipURL,
+        // title: clipTitle,
+        // description: clipDescription,
+        // indexes: indexes,
+        // user: uniqueName,
       //   }
       // )
       
@@ -118,9 +126,8 @@ export default function ClipUpload({
       title: clipTitle,
       description: clipDescription,
       indexes: indexes,
-      user: { name: userName,
-              photoURL: userPhotoURL,
-              twitter: userTwitterURL}
+      user: uniqueName,
+      
     }).then(() => navigate('/'));
   };
 
@@ -209,10 +216,8 @@ export default function ClipUpload({
               clipTitle={formFields.clipTitle}
               clipDescription={formFields.clipDescription}
               clipTech={techSelection}
-              userName={user.displayName}
-              userPhotoURL={user.photoURL}
-              userTwitterURL={user.reloadUserInfo?.screenName || ''}
               selectedVideogameVersion={selectedVideogameVersion || ''}
+              user={uniqueName}
             />
           </Col>
         </Row>

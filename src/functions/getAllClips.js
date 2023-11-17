@@ -122,7 +122,7 @@ export default async function getAllClips(
     }
     
     filteredQuery.forEach((doc) => {
-      clips.push(doc.data());
+      clips.push({ id: doc.id, ...doc.data() });
     });
 
     console.log(clips);

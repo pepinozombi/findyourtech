@@ -1,44 +1,60 @@
+import React, { useEffect, useState } from "react";
 import { Card, Image, Stack } from "react-bootstrap";
 import ClipItemCardCharacters from "../ClipItemCardCharacters";
-import ReactPlayer from "react-player";
 import shortid from 'shortid';
 import obtenerTiempoTranscurrido from "../../functions/obtenerTiempoTranscurrido";
 import truncate from "../../functions/truncate";
 import { Clock } from "react-bootstrap-icons";
+import getUserByUniqueName from "../../functions/getUserByUniqueName";
+import ClipPlayer from "../ClipPlayer";
+import { Link } from "react-router-dom";
 
 const ClipItemCard = ({
+  clipId,
   clipURL,
   clipTitle,
   clipDescription,
   clipTech,
-  userName,
-  userPhotoURL,
-  userTwitterURL,
   selectedVideogameVersion,
-  createdAt
+  createdAt,
+  user
 }) => {
-  const isTwitchClip = (clipURL) => clipURL.match("twitch");
+  const [userProps, setUserProps] = useState(null);
+
   const fecha = createdAt && obtenerTiempoTranscurrido(new Date(createdAt.seconds * 1000 + Math.round(createdAt.nanoseconds / 1000000)));
+  
+  useEffect(() => {
+    // Comprobar si el usuario está autenticado
+    if (user) {
+        // Realizar la consulta a Firebase para obtener UserProps
+        // Sustituye 'tuConsultaAFirebase' con la consulta real a tu colección UserProps
+        console.log(user);
+        getUserByUniqueName(user)
+          .then((userPropsData) => {
+              setUserProps(userPropsData.data);
+        })
+        .catch((error) => {
+            console.error("Error al cargar UserProps:", error);
+        });
+    }
+  }, [user]);
 
   return (
     <Card style={{ margin: "10px" }}>
-      {isTwitchClip(clipURL) ? (
-        <iframe
-          src={`https://clips.twitch.tv/embed?clip=${
-            clipURL.split("/")[3].length > 20
-              ? clipURL.split("/")[3]
-              : clipURL.split("/")[5].split("?")[0]
-          }&parent=findyourtech-2022.web.app&parent=localhost`}
-          allowFullScreen
-          height="225px"
-          width="100%"
-          title="twitchClipTech"
-        ></iframe>
-      ) : (
-        <ReactPlayer width={"100%"} height={"225px"} url={clipURL} />
-      )}
+      <ClipPlayer url={clipURL} />
       <Card.Body style={{ minHeight: "120px" }}>
-        <Card.Title>{clipTitle}</Card.Title>
+        { clipId ? (
+          <Link to={`/clip/${clipId}`} >
+            <Card.Title>
+              {truncate(clipTitle, 50)}
+            </Card.Title>
+          </Link>
+        ):(
+          <Card.Title>
+            {truncate(clipTitle, 50)}
+          </Card.Title>
+        )}
+        
         <Card.Text>
           {
             truncate(clipDescription, 100)
@@ -98,15 +114,15 @@ const ClipItemCard = ({
           </>
         )}
       <Card.Body>
-        {userName && userPhotoURL && (
-          <Card.Link target="_blank" href={"https://twitter.com/" + userTwitterURL}>
+        {userProps?.uniqueName && (
+          <Card.Link target="_blank" href={"/user/" + userProps?.uniqueName}>
             <Image
-              src={userPhotoURL}
+              src={userProps?.profilePic}
               alt="UserName profile image"
               roundedCircle
               style={{ width: "30px", marginRight: "10px" }}
             />
-            {userName}
+            {userProps?.name}
           </Card.Link>
         )}
       </Card.Body>

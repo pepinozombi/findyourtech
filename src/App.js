@@ -1,11 +1,6 @@
 import React, { createContext, useMemo, useState } from "react";
-import Header from "./components/Header";
+import AppRouter from "./components/AppRouter";
 import { onAuthStateChanged } from "firebase/auth";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Upload from "./pages/Upload/";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import { authentication } from "./firebase/config";
 
 export const AuthenticationContext = createContext({ user: {}, setUser: () => {} });
@@ -25,15 +20,7 @@ function App() {
 
   return (
     <AuthenticationContext.Provider value={value}>
-      <BrowserRouter>
-        <div className="App">
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/upload" element={<Upload />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      <AppRouter />
     </AuthenticationContext.Provider>
   );
 }
