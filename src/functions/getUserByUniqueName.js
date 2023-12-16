@@ -23,7 +23,6 @@ const getUserByUniqueName = async (uniqueName) => {
 
       if (!querySnapshot.empty) {
         // El usuario ya existe, no necesitas hacer nada
-        console.log('Usuario ya existe en userProps');
         return {status: 200, message: "OK", data: querySnapshot.docs[0].data()};
       } else {
         return {status: 404,  message: "Not found", data: "No se encontró el usuario en la base de datos"}

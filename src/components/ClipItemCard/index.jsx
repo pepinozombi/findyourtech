@@ -55,9 +55,9 @@ const ClipItemCard = ({
           </Card.Title>
         )}
         
-        <Card.Text>
+        <Card.Text className="clip-desc">
           {
-            truncate(clipDescription, 100)
+            truncate(clipDescription, 50)
           }
         </Card.Text>
         {createdAt &&

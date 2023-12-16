@@ -9,6 +9,8 @@ import getUserByUniqueName from "../../functions/getUserByUniqueName";
 import ClipItemCardCharacters from "../ClipItemCardCharacters";
 import shortid from "shortid";
 import CommentSection from "../CommentSection";
+import LargeText from "../LargeText";
+import ClipPropsSection from "../ClipPropsSection";
 
 const ClipView = (
   clipIdFromPage
@@ -45,7 +47,6 @@ const ClipView = (
       getClipById(clipId)
         .then((clipReturn) => {
           setClip(clipReturn.data);
-          console.log(clipReturn);
           setLoading(false); // Cambia el estado de carga una vez que los datos están listos
         })
         .catch((error) => {
@@ -64,7 +65,6 @@ const ClipView = (
     if (clip?.user) {
       // Realizar la consulta a Firebase para obtener UserProps
       // Sustituye 'tuConsultaAFirebase' con la consulta real a tu colección UserProps
-      console.log(clip?.user);
       getUserByUniqueName(clip?.user)
         .then((userPropsData) => {
           setUserProps(userPropsData.data);
@@ -109,7 +109,7 @@ const ClipView = (
           <div className="col-12 col-lg-9">
             <div className="row">
               <div className="col-12">
-                <div className="row">
+                <div className="row mb-2">
                   <div className="col-12">
                     <h2>
                       {clip?.title}
@@ -117,7 +117,7 @@ const ClipView = (
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-12">
+                  <div className="col-12 mb-2">
                     {userProps?.uniqueName && (
                       <CardLink target="_blank" href={"/user/" + userProps?.uniqueName}>
                         <Image
@@ -131,26 +131,31 @@ const ClipView = (
                     )}
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-12">
+                <div className="row mb-2">
+                  <div className="col-12 col-md-6">
                     <Clock />
                     {
                       clip?.createdAt &&
                       obtenerTiempoTranscurrido(new Date(clip?.createdAt?.seconds * 1000 + Math.round(clip?.createdAt?.nanoseconds / 1000000)))
                     }
                   </div>
+                  <div className="col-12 col-md-6">
+                    <ClipPropsSection
+                      clipId={clipId}
+                    />
+                  </div>
                 </div>
-                <div className="row">
+                <div className="row mb-2">
                   <div className="col-12">
-                    <p>
-                      {clip?.description}
-                    </p>
+                    <LargeText
+                      textGet={clip?.description}
+                    />
                   </div>
                 </div>
 
               </div>
             </div>
-            <Stack direction="horizontal" className="flex-container">
+            <Stack direction="horizontal" className="flex-container mb-2">
               {
                 clip?.tech?.selectedClipType !== "" ? (
                   <div className="p-1 bd-highlight">

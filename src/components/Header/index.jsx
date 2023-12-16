@@ -3,7 +3,7 @@ import { authentication } from "../../firebase/config";
 import { TwitterAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { Navbar, Container, Nav, NavDropdown, Image, Spinner } from "react-bootstrap";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { BoxArrowDown, Twitter, CaretDown } from "react-bootstrap-icons";
+import { BoxArrowDown, Twitter, CaretDown, Upload } from "react-bootstrap-icons";
 import "./header.scss";
 import "../../pages/Upload/upload.scss";
 import { AuthenticationContext } from "../../App";
@@ -72,7 +72,7 @@ useEffect(() => {
           <Nav>
             {user && vip && (
               <Navbar.Text href="#upload">
-                <BoxArrowDown />
+                <Upload />
                 <Link to="/upload" className="mx-2">
                   Upload
                 </Link>

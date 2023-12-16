@@ -24,7 +24,6 @@ const getUserByName = async (name) => {
 
       if (!querySnapshot.empty) {
         // El usuario ya existe, no necesitas hacer nada
-        console.log('Usuario existe en userProps');
         console.log(querySnapshot.docs[0].data());
         return {status: 200, message: "OK", data: querySnapshot.docs[0].data()};
       } else {
