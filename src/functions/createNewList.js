@@ -22,7 +22,7 @@ export default async function createNewList(listData, clipId, userId) {
     const docListClipRef = doc(collectionListClipRef, newListClipId);
     console.log('metiendo nuevo video en lista');
     console.log({ clipId, listId: newListClipId, user: userId, createdAt: serverTimestamp() });
-    await setDoc(docListClipRef, { clipId, listId: newId, user: userId, createdAt: serverTimestamp() }).then(() =>{
+    await setDoc(docListClipRef, { clipId, listId: newId, user: userId}).then(() =>{
       return {status: 200, message: "OK", data: true}
     }).catch((error) => {
       console.log("ERROR: ", error);

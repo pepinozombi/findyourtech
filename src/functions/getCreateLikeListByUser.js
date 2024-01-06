@@ -6,7 +6,8 @@ import {
   query,
   where,
   doc,
-  setDoc
+  setDoc,
+  serverTimestamp
 } from "firebase/firestore";
 
 import { v4 as uuidv4 } from "uuid";
@@ -33,7 +34,8 @@ const getCreateLikeListByUser = async (user) => {
         name: "Liked clips",
         likeList: true,
         description: "",
-        user: user
+        user: user,
+        createdAt: serverTimestamp()
         // Otras propiedades por defecto aquí
       });
 

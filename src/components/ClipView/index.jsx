@@ -22,7 +22,7 @@ const ClipView = (
   const [loading, setLoading] = useState(true)
   const [width, setWidth] = useState(window.innerWidth * 0.8);
   const [userProps, setUserProps] = useState(null);
-  const aspectRatio = 16 / 9; // Relación de aspecto 16:9
+  const aspectRatio = 40 / 21; // Relación de aspecto 16:9
 
   useEffect(() => {
     const handleResize = () => {

@@ -37,7 +37,7 @@
 }
 
 .characterFrame:hover {
-    border:3px solid #d33682;
+    border:4px solid #d33682;
     -webkit-transform: scale(1.1,1.1); 
     transform: scale(1.1,1.1);
 }
@@ -65,7 +65,7 @@
 }
 
 .characterFrame-mini:hover {
-    border:3px solid #d33682;
+    border:4px solid #d33682;
     -webkit-transform: scale(1.1,1.1); 
     transform: scale(1.1,1.1);
 }
@@ -110,7 +110,13 @@
 }
 
 .selectedCharacterFrame {
-    border:3px solid #d33682
+    border:4px solid #d33682;
+    -webkit-transform: scale(1.1,1.1); 
+    transform: scale(1.1,1.1);
+}
+
+.characterSelectFrame {
+    transition: all 0.3s ease-in-out !important;
 }
 
 .characterFrameContent-mini {

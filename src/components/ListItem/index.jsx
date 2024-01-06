@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Card, Image, Stack } from "react-bootstrap";
-import ClipItemCardCharacters from "../ClipItemCardCharacters";
-import shortid from 'shortid';
 import obtenerTiempoTranscurrido from "../../functions/obtenerTiempoTranscurrido";
 import truncate from "../../functions/truncate";
 import { Clock } from "react-bootstrap-icons";
 import getUserByUniqueName from "../../functions/getUserByUniqueName";
 import ClipPlayer from "../ClipPlayer";
+import ClipItemCardCharacters from "../ClipItemCardCharacters";
 import { Link } from "react-router-dom";
+import shortid from "shortid";
 
-const ClipItemCard = ({
-  clipId,
-  clipURL,
-  clipTitle,
-  clipDescription,
-  clipTech,
-  selectedVideogameVersion,
+const ListItem = ({
+  listId,
+  listTitle,
+  listDescription,
+  listTech,
   createdAt,
   user
 }) => {
@@ -24,10 +22,7 @@ const ClipItemCard = ({
   const fecha = createdAt && obtenerTiempoTranscurrido(new Date(createdAt.seconds * 1000 + Math.round(createdAt.nanoseconds / 1000000)));
   
   useEffect(() => {
-    // Comprobar si el usuario está autenticado
     if (user) {
-        // Realizar la consulta a Firebase para obtener UserProps
-        // Sustituye 'tuConsultaAFirebase' con la consulta real a tu colección UserProps
         getUserByUniqueName(user)
           .then((userPropsData) => {
               setUserProps(userPropsData.data);
@@ -40,23 +35,22 @@ const ClipItemCard = ({
 
   return (
     <Card style={{ margin: "10px" }}>
-      <ClipPlayer url={clipURL} />
-      <Card.Body style={{ minHeight: "120px" }}>
-        { clipId ? (
-          <Link to={`/clip/${clipId}`} >
+      <Card.Body>
+        { listId ? (
+          <Link to={`/list/${listId}`} >
             <Card.Title>
-              {truncate(clipTitle, 50)}
+              {truncate(listTitle || "", 50)}
             </Card.Title>
           </Link>
         ):(
           <Card.Title>
-            {truncate(clipTitle, 50)}
+            {truncate(listTitle || "", 50)}
           </Card.Title>
         )}
         
-        <Card.Text className="clip-desc">
+        <Card.Text className="list-desc">
           {
-            truncate(clipDescription, 50)
+            truncate(listDescription || "", 50)
           }
         </Card.Text>
         {createdAt &&
@@ -66,55 +60,36 @@ const ClipItemCard = ({
         }
           <Stack direction="horizontal" className="flex-container">
         {
-          clipTech.selectedClipType !== "" ? (
+          listTech?.selectedListType && (
             <div className="p-1 bd-highlight">
               <span className="selected-item px-1"> 
-                  {clipTech.selectedClipType}
+                  {listTech.selectedListType}
               </span>
             </div>
-          ): (
-            <>
-            </>
           )
         }
         {
-          clipTech.selectedClipLevel !== "" ? (
+          listTech?.selectedListLevel && (
             <div className="p-1 bd-highlight">
               <span className="selected-item px-1"> 
-                  {clipTech.selectedClipLevel}
+                  {listTech.selectedListLevel}
               </span>
             </div>
-          ): (
-            <></>
-          )
-        }
-        {
-          selectedVideogameVersion !== "" ? (
-            <div className="p-1 bd-highlight">
-              <span className="selected-item px-1"> 
-                  v. {selectedVideogameVersion}
-              </span>
-            </div>
-          ): (
-            <></>
           )
         }
         </Stack>
       </Card.Body>
-        {clipTech?.characterSelect && Object.keys(clipTech?.characterSelect).length !== 0 ? (
+        {listTech?.characterSelect && Object.keys(listTech?.characterSelect).length !== 0 && (
           <ClipItemCardCharacters
-            characterSelect={clipTech?.characterSelect}
-            charactersByTeam={clipTech?.selectedVideogame.charactersByTeam}
+            characterSelect={listTech?.characterSelect}
+            charactersByTeam={listTech?.selectedVideogame.charactersByTeam}
             key={shortid.generate()}
             tooltipkey={shortid.generate()}
           />
-          ) : (
-          <>
-          </>
-        )}
+          )}
       <Card.Body>
         {userProps?.uniqueName && (
-          <Card.Link href={"/user/" + userProps?.uniqueName}>
+          <Card.Link target="_blank" href={"/user/" + userProps?.uniqueName}>
             <Image
               src={userProps?.profilePic}
               alt="UserName profile image"
@@ -129,4 +104,4 @@ const ClipItemCard = ({
   );
 };
 
-export default ClipItemCard;
+export default ListItem;

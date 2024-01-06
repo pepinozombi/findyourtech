@@ -23,11 +23,10 @@ const ClipPropsSection = (ClipId) => {
   const [meGusta, setMeGusta] = useState(false);
   const [desactualizado, setDesactualizado] = useState(false);
   const [listasReproduccion, setListasReproduccion] = useState([]);
-  const [nuevaLista, setNuevaLista] = useState('');
-  const [videoAgregadoALista, setVideoAgregadoALista] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formTitle, setFormTitle] = useState('Create new list');
   const [dropdownOpen, setDropdownOpen] = useState(false); // Nuevo estado para controlar la apertura/cierre del dropdown
+  const [getClipId, setGetClipId] = useState(ClipId);
 
   // Otros estados necesarios...
 
@@ -72,57 +71,75 @@ const ClipPropsSection = (ClipId) => {
     setDesactualizado(statusDeprecated);
   };
 
-  const handleGuardarEnLista = (lista) => {
-    setVideoAgregadoALista(lista);
-    // Aquí puedes realizar la lógica para agregar el video a la lista seleccionada
-  };
-
-
-
-  const handleFormSubmit = (listName) => {
+  const handleFormSubmit = (listProps) => {
     // Lógica para guardar la lista o editarla, según el contexto
 
     if (user?.uid) {
       getUserByUID(user.uid)
         .then((userPropsData) => {
-          let newList = {
-            description: "",
-            likeList: false,
-            name: listName,
-            user: userPropsData.data.uniqueName
-          }
-
-          createNewList(newList, ClipId.clipId, userPropsData.data.uniqueName)
-            .then((created) => {
-              getUserLists(userPropsData.data.uniqueName)
-              if (created) {
-                toast("List successfully created");
-              }
-            })
-            .catch((error) => {
-              console.error("Error al cargar deprecated:", error);
-              toast.error("Error al crear lista");
-            });
-        })
-        .catch((error) => {
-          console.error("Error al cargar UserProps:", error);
+          createList(userPropsData, listProps)
         });
     }
-
-
   };
+
+  const createList = (userPropsData, listProps) => {
+
+    let arrayP1 = [];
+    let arrayP2 = [];
+
+    let characterData = listProps.characterSelect;
+
+    for (const key in characterData) {
+      if (key.startsWith('P1_') && characterData[key]?.name) {
+        arrayP1.push(characterData[key].name);
+      } else if (key.startsWith('P2_') && characterData[key]?.name) {
+        arrayP2.push(characterData[key].name);
+      }
+    }
+
+    let indexes = {
+      videogame: process.env.REACT_APP_VIDEOGAME_CODE,
+      titleDescription: listProps.listName + listProps.listDescription,
+      name: listProps.listName,
+      description: listProps.listDescription,
+      user: userPropsData.data.uniqueName,
+      charactersP1: arrayP1,
+      charactersP2: arrayP2
+    }
+
+    createNewList(
+      {
+        name: listProps.listName,
+        description: listProps.listDescription,
+        indexes: indexes,
+        user: userPropsData.data.uniqueName,
+        tech: listProps,
+        likeList: false
+      },
+      ClipId.clipId,
+      userPropsData.data.uniqueName
+    ).then((created) => {
+      getUserLists(userPropsData.data.uniqueName)
+      if (created) {
+        toast("List successfully created");
+      }
+    }).catch((error) => {
+      console.error("Error al cargar deprecated:", error);
+      toast.error("Error al crear lista");
+    });
+
+  }
 
   const handleCheckboxChange = (lista) => {
     if (user?.uid) {
       getUserByUID(user.uid)
         .then((userPropsData) => {
           var uniqueName = userPropsData.data.uniqueName;
-          console.log("video", ClipId,  " pa lista: ", lista, " para el usuario: ", uniqueName);
           saveListClip(uniqueName, lista.id, ClipId.clipId, false)
             .then((data) => {
               getUserLists(uniqueName)
             })
-          
+
         })
         .catch((error) => {
           console.error("Error al cargar UserProps:", error);
@@ -136,8 +153,7 @@ const ClipPropsSection = (ClipId) => {
       getUserByUID(user.uid)
         .then((userPropsData) => {
           var uniqueName = userPropsData.data.uniqueName;
-          getUserLists(uniqueName)
-          
+          getUserLists(uniqueName, ClipId)
         })
         .catch((error) => {
           console.error("Error al cargar UserProps:", error);
@@ -145,24 +161,47 @@ const ClipPropsSection = (ClipId) => {
     }
   };
 
-  const getUserLists = (uniqueName) => {
+  const getUserLists = (uniqueName, ClipId) => {
     let getLikeList = false;
-          getUserListsByUser(uniqueName, getLikeList)
-            .then((lists) => {
-              checkClipInLists(lists.data, uniqueName, ClipId)
-                .then((completeLists) => {
-                  setListasReproduccion(completeLists.data)
-                })
-                .catch((error) => {
-                  console.error("Error al cargar listas:", error);
-                });
-            })
-            .catch((error) => {
-              console.error("Error al cargar listas:", error);
-            });
+    getUserListsByUser(uniqueName, getLikeList)
+      .then((lists) => {
+        checkClipInLists(lists.data, uniqueName, getClipId)
+          .then((completeLists) => {
+            setListasReproduccion(completeLists.data)
+          })
+          .catch((error) => {
+            console.error("Error al cargar listas:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error al cargar listas:", error);
+      });
+  }
+
+  const getUserLike = (uniqueName, ClipId) => {
+    getClipLikeByUserClip(uniqueName, ClipId)
+      .then((isLike) => {
+        setMeGusta(isLike.data)
+      })
+      .catch((error) => {
+        console.error("Error al cargar deprecated:", error);
+      });
+  }
+
+  const getUserDeprecated = (uniqueName, ClipId) => {
+    //añadir o borrar el clip de la lista esta en la tabla en ListClip
+    getClipDeprecatedByUserClip(uniqueName, ClipId)
+      .then((isDeprecated) => {
+        setDesactualizado(isDeprecated.data)
+      })
+      .catch((error) => {
+        console.error("Error al cargar deprecated:", error);
+      });
   }
 
   useEffect(() => {
+    if (ClipId) { setGetClipId(ClipId) }
+
     //Obtener el me gusta, el marcado, cargar las listas y marcar las que estan llenas
     if (user?.uid) {
       getUserByUID(user.uid)
@@ -170,31 +209,19 @@ const ClipPropsSection = (ClipId) => {
           let uniqueName = userPropsData.data.uniqueName;
 
           //añadir o borrar el clip de la lista esta en la tabla en ListClip
-          getClipDeprecatedByUserClip(uniqueName, ClipId)
-            .then((isDeprecated) => {
-              setDesactualizado(isDeprecated.data)
-            })
-            .catch((error) => {
-              console.error("Error al cargar deprecated:", error);
-            });
+          getUserLike(uniqueName, ClipId)
 
           // getClipLike(uniqueName, ClipId)
-          getClipLikeByUserClip(uniqueName, ClipId)
-            .then((isLike) => {
-              setMeGusta(isLike.data)
-            })
-            .catch((error) => {
-              console.error("Error al cargar deprecated:", error);
-            });
+          getUserDeprecated(uniqueName, ClipId)
 
-            getUserLists(uniqueName)
+          getUserLists(uniqueName, ClipId)
         })
         .catch((error) => {
           console.error("Error al cargar UserProps:", error);
         });
     }
 
-  }, [user]);
+  }, [user, ClipId]);
 
   return (
     <div className='d-flex justify-content-end'>
@@ -221,8 +248,8 @@ const ClipPropsSection = (ClipId) => {
             <Plus></Plus> New list
           </Dropdown.Item>
           <Dropdown.Divider />
-          {listasReproduccion.map((lista, index) => (
-            <Dropdown.Item key={lista.id}>
+          {listasReproduccion && listasReproduccion.map((lista, index) => (
+            <Dropdown.Item key={lista.id} onClick={() => handleCheckboxChange(lista)}>
               <label>
                 <input
                   type="checkbox"

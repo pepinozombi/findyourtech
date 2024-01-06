@@ -43,7 +43,7 @@ const CharactersModal = ({
       ):(
         <Modal.Body className="character-modal">
           <div className="container">
-            <div className="row">
+            <div className="row mb-3">
               <div className="col-5 col-md-5 align-items-center">
                 
                   <CharacterSelectFrames
@@ -90,7 +90,7 @@ const CharactersModal = ({
         {videogame === "project-l" && (
           <a
             target="_blank"
-            href="https://project-l.riotgames.com/es-e"
+            href="https://project-l.riotgames.com/es-es"
             rel="noreferrer"
           >
             Project L official page

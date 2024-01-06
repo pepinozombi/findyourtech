@@ -5,7 +5,7 @@ import ClipsFilter from "../../components/ClipsFIlter";
 import getAllClips from "../../functions/getAllClips";
 import { GridLoader } from "react-spinners";
 
-const Home = () => {
+const Lists = () => {
   const [clips, setClips] = React.useState([]);
   const [filterSelection, setFilterSelection] = React.useState([]);
   const [techSelectionHome, setTechSelectionHome] = React.useState([]);
@@ -63,4 +63,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Lists;

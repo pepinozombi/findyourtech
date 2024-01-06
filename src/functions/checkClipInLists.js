@@ -27,8 +27,6 @@ const checkClipInLists = async (lists, user, clipId) => {
       qUser = query(qUser, where("listId", "==", list.id));
       qUser = query(qUser, where("clipId", "==", clipId.clipId));
 
-      console.log('user: ', user, "listId: ", list.id, "clipId: ", clipId.clipId);
-
       queries.push(getDocs(qUser));
     }
 
@@ -37,15 +35,12 @@ const checkClipInLists = async (lists, user, clipId) => {
     querySnapshots.forEach((querySnapshot, index) => {
       const list = lists[index];
       if (!querySnapshot.empty) {
-        console.log('true');
         completeLists.push({ id: list.id, name: list.name, clipInList: true });
       } else {
-        console.log('false');
         completeLists.push({ id: list.id, name: list.name, clipInList: false });
       }
     });
 
-    console.log(completeLists);
     return { status: 200, message: "OK", data: completeLists };
   } catch (error) {
     console.log('Error al verificar el clip en la lista:', error);

@@ -1,69 +1,54 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Row } from "react-bootstrap";
-import { PlusCircle } from "react-bootstrap-icons";
 import { GGST_CHARACTERS } from "../../utils/collections/characters";
 import { PL_CHARACTERS } from "../../utils/collections/characters";
 import { VIDEOGAMES } from "../../utils/collections/videogames";
 import CharactersModal from "../CharactersModal";
-import GamesModal from "../GamesModal";
-import SelectedClipType from "../SelectedClipType";
-import SelectedCharacters from "../SelectedCharacters";
 import Cookies from 'universal-cookie';
-import SelectedClipLevel from "../selectedClipLevel";
+import { Button } from "react-bootstrap";
+import { PlusCircle } from "react-bootstrap-icons";
 
-const TechSelector = ({
+const CharactersModalController = ({
   techSelection,
   handleTechSelection,
-  techLayout
+  characterSelect, 
+  setCharacterSelect,
+  videogameCode
 }) => {
   const cookies = new Cookies();
   const [showCharacterModal, toggleCharacterModal] = useState(false);
-  const [showGamesModal, toggleGamesModal] = useState(false);
   const [videogameCharacters, setVideogameCharacters] = useState([]);
-  const [characterSelect, setCharacterSelect] = useState([]);
-  const [selectVideogameName, setVideogameName] = useState("");
+  const [selectVideogameName, setVideogameName] = useState(process.env.REACT_APP_VIDEOGAME_CODE);
   const [selectCharactersByTeam, setCharactersByTeam] = useState("");
   const [selectedItemId, setSelectedItemId] = useState(null);
 
-  const [selectedClipType, setSelectedClipType] = useState("");
-  const [selectedClipLevel, setSelectedClipLevel] = useState("");
-  const [selectedVideogame, setSelectedVideogame] = useState([]);
+  const [selectedVideogame, setSelectedVideogame] = useState("");
   //const [selectedCharacters, setSelectedCharacters] = useState([]);
-  
+
   const closeCharacterModal = () => toggleCharacterModal(false);
   const openCharacterModal = () => {
     toggleCharacterModal(true)
   };
 
-  const closeGamesModal = () => toggleGamesModal(false);
-  const openGamesModal = () => toggleGamesModal(true);
-
 
   useEffect(() => {
-    if(Object.keys(characterSelect).length === 0) {
+    if (Object.keys(characterSelect).length === 0) {
       selectVideogame(VIDEOGAMES.find(videojuego => videojuego.code === process.env.REACT_APP_VIDEOGAME_CODE))
     }
     // Runs after EVERY rendering
-    handleTechSelection(selectedClipType, selectedClipLevel, selectedVideogame, characterSelect)
-  }, [selectedClipType, selectedClipLevel, selectedVideogame, characterSelect]);
+    handleTechSelection(selectedVideogame, characterSelect)
+  }, [selectedVideogame, characterSelect]);
 
-  const handleClipTypeSelection = (e) => {
-    setSelectedClipType(e.target.value)
-  }
+  useEffect(() => {
+    if(videogameCode) {
+      selectVideogame(VIDEOGAMES.find(videojuego => videojuego.code === videogameCode))
+    }
+  }, [videogameCode]);
 
-  const handleClipLevelSelection = (e) => {
-    setSelectedClipLevel(e.target.value)
-  }
-
-  const handleVideogameSelection = (videogame) => {
-    selectVideogame(videogame)
-
-  };
 
   const selectVideogame = (videogame) => {
     //states
     setVideogameName(videogame.code)
-    
+
     setCharactersByTeam(videogame.charactersByTeam)
 
     createCharacterSelectArray(videogame.charactersByTeam)
@@ -86,7 +71,6 @@ const TechSelector = ({
 
     setSelectedItemId("P1_0")
     //cerramos el modal
-    toggleGamesModal(false)
   }
 
   //generamos el array con todos los muñecos
@@ -122,18 +106,18 @@ const TechSelector = ({
 
     //si no hay selectedItemId buscamos el primero vacío
     if (selectedItemId == null) {
-      
+
       claveSeleccionada = "P1_0";
-  
+
       if (claveSeleccionada) {
         setSelectedItemId(claveSeleccionada);
       }
     }
 
     //hacemos un shallow copy para forzar el re-render del componente
-    let updateCharacterSelect = {...characterSelect};
+    let updateCharacterSelect = { ...characterSelect };
     updateCharacterSelect[claveSeleccionada] = character;
-    
+
     setCharacterSelect(updateCharacterSelect)
 
     setNextItemId(claveSeleccionada);
@@ -175,52 +159,23 @@ const TechSelector = ({
 
   const deleteSelectedCharacter = characterId => {
     //hacemos un shallow copy para forzar el re-render del componente
-    let updateCharacterSelect = {...characterSelect};
+    let updateCharacterSelect = { ...characterSelect };
     updateCharacterSelect[characterId] = {};
-    
+
     setCharacterSelect(updateCharacterSelect)
   }
 
   return (
     <>
-      <Row className="justify-content-center">
-
-        <SelectedClipType
-          selectedClipType={selectedClipType}
-          handleClipTypeSelection={handleClipTypeSelection}
-        />
-
-        <SelectedClipLevel
-          selectedClipLevel={selectedClipLevel}
-          handleClipLevelSelection={handleClipLevelSelection}
-        />
-
-        {/* <Button
-          onClick={openGamesModal}
-          variant="outline-primary"
-          className="w-100 ms-1 btn-tech mb-2"
-          disabled={false}
-          style={{maxWidth: '175px', fontSize: '1em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-        >
-          Select game <PlusCircle className="ms-2" />
-        </Button> */}
-        <Button
-          onClick={openCharacterModal}
-          variant="outline-primary"
-          className="w-100 ms-1 btn-tech mb-2"
-          disabled={false}
-          style={{maxWidth: '175px', fontSize: '1em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}
-        >
-          Add character <PlusCircle className="ms-2" />
-        </Button>
-      </Row>
-
-      <GamesModal
-        showGamesModal={showGamesModal}
-        closeGamesModal={closeGamesModal}
-        games={VIDEOGAMES}
-        handleSelection={handleVideogameSelection}
-      />
+      <Button
+        onClick={openCharacterModal}
+        variant="outline-primary"
+        className="w-100 ms-2 btn-tech mb-2"
+        disabled={false}
+        style={{ maxWidth: '175px', fontSize: '1em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+      >
+        Add character <PlusCircle className="ms-2" />
+      </Button>
       <CharactersModal
         showCharacterModal={showCharacterModal}
         closeCharacterModal={closeCharacterModal}
@@ -232,15 +187,8 @@ const TechSelector = ({
         selectedItemId={selectedItemId}
         selectedCharacters={characterSelect}
       />
-
-      <SelectedCharacters
-        characterSelect={characterSelect}
-        charactersByTeam={selectCharactersByTeam}
-        handleCharacterDeletion={handleCharacterDeletion}
-      />
-
     </>
   );
 };
 
-export default TechSelector;
+export default CharactersModalController;

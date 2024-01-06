@@ -125,8 +125,6 @@ export default async function getAllClips(
       clips.push({ id: doc.id, ...doc.data() });
     });
 
-    console.log(clips);
-
     clips = filterClipsBySearchText(clips, searchText);
 
     return clips;
